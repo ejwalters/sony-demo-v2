@@ -1,0 +1,360 @@
+body {
+    font-family: "Archivo", sans-serif
+}
+
+.mySlides {
+    display: none
+}
+
+.hero-thumbnails {
+    padding-top: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    transition: transform 1s ease;
+
+}
+
+.thumbnail-image {
+    border-radius: 5px;
+    object-fit: cover;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 1s ease;
+    transform: scale(1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.hero-image {
+    transition: opacity 1s ease;
+}
+
+.thumbnail-image:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.thumbnail-image.selected {
+    outline: 2px solid blue;
+    padding: 2px;
+    opacity: 1;
+}
+
+.sign-in-btn {
+    margin-right: 100px;
+    margin-top: 15px;
+}
+
+/* Style for modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    width: 300px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+.topRight {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 100px;
+}
+
+#welcomeName {
+    font-size: larger;
+    margin-top: 10px;
+
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.left,
+.right {
+    width: 100%;
+}
+
+.left {
+    padding: 20px;
+    box-sizing: border-box;
+    margin-left: 50px;
+    flex: 1;
+    /* Take up remaining space */
+}
+
+.right {
+    padding: 20px;
+    box-sizing: border-box;
+    flex: 2;
+    /* Take up twice the space */
+}
+
+.left h1,
+.left h2,
+.left p,
+.left button {
+    margin-bottom: 20px;
+}
+
+.right img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Media query for responsiveness */
+@media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+    }
+
+    .left,
+    .right {
+        width: auto;
+        /* Reset width */
+    }
+
+    .left {
+        flex: 1;
+        /* Take up 1/3 of space */
+    }
+
+    .right {
+        flex: 2;
+        /* Take up 2/3 of space */
+    }
+}
+
+.hero-section {
+    position: relative;
+}
+
+.w3-content {
+    position: relative;
+}
+
+.hero-section img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.banner {
+    position: fixed;
+    top: 72px;
+    /* Adjust the top value according to the height of your navbar */
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 10px;
+    z-index: 900;
+    /* Ensure the banner stays above other content */
+}
+
+.w3-bar {
+    z-index: 1000;
+}
+
+.text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 10%;
+    /* Adjust the left position of the text overlay */
+    transform: translateY(-50%);
+    font-weight: 100;
+    color: white;
+    font-size: 32px;
+    text-align: left;
+    /* Adjust the font size as needed */
+    width: 40%;
+    /* Adjust the width of the text overlay */
+}
+
+.overlay-box {
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    /* Adjust the left value to position the box on the left 1/3 of the hero image */
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    width: 30%;
+    /* Adjust the width to make the box larger */
+}
+
+.overlay-title {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.overlay-description {
+    font-size: 18px;
+    font-weight: 100;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.material-button {
+    background-color: #2196F3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+    margin-left: 0;
+}
+
+.material-button:hover {
+    background-color: #0b7dda;
+}
+
+.resetAJS {
+    display: flex;
+}
+
+/* Modal Styles */
+.checkoutModal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+
+.checkoutModal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.material-button {
+    background-color: #2196F3;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+}
+
+.material-button:hover {
+    background-color: #0b7dda;
+}
+
+.closeCheckout {
+    cursor: pointer;
+}

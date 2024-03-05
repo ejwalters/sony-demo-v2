@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Archivo&display=swap" rel="stylesheet">
+
+<script src="client.js"></script>
+
+<head>
+    <script>
+        !function () {
+            var i = "analytics", analytics = window[i] = window[i] || []; if (!analytics.initialize) if (analytics.invoked) window.console && console.error && console.error("Segment snippet included twice."); else {
+                analytics.invoked = !0; analytics.methods = ["trackSubmit", "trackClick", "trackLink", "trackForm", "pageview", "identify", "reset", "group", "track", "ready", "alias", "debug", "page", "screen", "once", "off", "on", "addSourceMiddleware", "addIntegrationMiddleware", "setAnonymousId", "addDestinationMiddleware", "register"]; analytics.factory = function (e) { return function () { if (window[i].initialized) return window[i][e].apply(window[i], arguments); var n = Array.prototype.slice.call(arguments); if (["track", "screen", "alias", "group", "page", "identify"].indexOf(e) > -1) { var c = document.querySelector("link[rel='canonical']"); n.push({ __t: "bpc", c: c && c.getAttribute("href") || void 0, p: location.pathname, u: location.href, s: location.search, t: document.title, r: document.referrer }) } n.unshift(e); analytics.push(n); return analytics } }; for (var n = 0; n < analytics.methods.length; n++) { var key = analytics.methods[n]; analytics[key] = analytics.factory(key) } analytics.load = function (key, n) { var t = document.createElement("script"); t.type = "text/javascript"; t.async = !0; t.setAttribute("data-global-segment-analytics-key", i); t.src = "https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js"; var r = document.getElementsByTagName("script")[0]; r.parentNode.insertBefore(t, r); analytics._loadOptions = n }; analytics._writeKey = "1D67ygtRMZgCxgkHKgCuHUCHxr197YzB";; analytics.SNIPPET_VERSION = "5.2.0";
+                analytics.load("1D67ygtRMZgCxgkHKgCuHUCHxr197YzB");
+                analytics.page();
+            }
+        }();
+    </script>
+
+    <script>
+        //***** GET ANONYMOUS ID *****//
+        const cname = "ajs_anonymous_id";
+        function getCookie(cname) {
+            let name = cname + "=";
+            let decodedCookie = decodeURIComponent(document.cookie);
+            let ca = decodedCookie.split(';');
+            for (let i = 0; i < ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+        //***** SET COOKIE FOR PROFILE API *****//
+        let newCookie = getCookie(cname);
+
+        //***** FETCH DATA FROM PROFILE API *****//
+        fetch('http://localhost:3000/userData', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ anon_id: newCookie })
+        })
+            .then(response => response.json())
+            .then(data => {
+                //***** USE PROFILE API TO PERSONALIZE BANNER AND NAV BAR *****//
+                if (data.name) {
+                    let dataContainer = document.getElementById('welcomeName');
+                    dataContainer.innerHTML = "<p>Hi " + data.name + "!" + "</p>";
+                    let banner = document.querySelector(".banner");
+                    if (data.last_product_viewed) {
+                        banner.textContent = "Hi " + data.name + "!" + " Be sure to check out " + data.last_product_viewed;
+                    }
+                }
+
+                //***** INITIALIZE IMAGES AND OVERLAY ELEMENTS FOR DYNAMIC DISPALY *****//
+                let finalFantasyThumbnail = document.getElementById("finalFantasyHero");
+                let headsetThumbnail = document.getElementById("headsetHero");
+                let helldiversThumbnail = document.getElementById("helldiversHero");
+                let dynamicHero = document.getElementById("heroImage");
+                let textOverlay = document.querySelector(".overlay-title");
+                let overlayDescription = document.querySelector(".overlay-description");
+
+                //***** IF LAST PRODUCT VIEWED EXISTS, USE THAT TO PERSONALIZE HERO IMAGE *****//
+                if (data.last_product_viewed) {
+                    for (let i = 0; i < products.length; i++) {
+                        if (data.last_product_viewed == products[i].name) {
+                            dynamicHero.src = products[i].img;
+                            textOverlay.textContent = products[i].headline;
+                            overlayDescription.textContent = products[i].description;
+                            modalTitle.textContent = products[i].name;
+                            modalPrice.textContent = "Price: $" + products[i].price;
+                            modalTotal.textContent = "Total: $" + products[i].price;
+                            modalQuantity.textContent = "x1";
+                            modalPlatform.textContent = products[i].platform;
+                            modalSKU.textContent = products[i].sku;
+                            if (products[i].name == "Helldivers") {
+                                helldiversThumbnail.classList.add("selected");
+                                finalFantasyThumbnail.classList.remove("selected");
+                                headsetThumbnail.classList.remove("selected");
+                            }
+                            if (products[i].name == "Final Fantasy") {
+                                helldiversThumbnail.classList.remove("selected");
+                                finalFantasyThumbnail.classList.add("selected");
+                                headsetThumbnail.classList.remove("selected");
+                            }
+                            if (products[i].name == "Pulse Elite Wireless Headset") {
+                                helldiversThumbnail.classList.remove("selected");
+                                finalFantasyThumbnail.classList.remove("selected");
+                                headsetThumbnail.classList.add("selected");
+                            }
+                        }
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    </script>
+</head>
+
+<body>
+
+    <!-- ***** DEFINING NAV BAR ***** -->
+    <div class="w3-top">
+        <div class="w3-bar w3-white w3-card">
+            <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right"
+                href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i
+                    class="fa fa-bars"></i></a>
+            <div class="w3-bar-item"> <img src="https://live.staticflickr.com/65535/53562188674_742b18459a_m.jpg"
+                    width="75" height="50" alt=""></div>
+            <div class="w3-dropdown-hover w3-hide-small">
+                <button class="w3-padding-24 w3-button" title="More">Games <i class="fa fa-caret-down"></i></button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                    <a href="/data" class="w3-bar-item w3-button">PS5</a>
+                    <a href="#" class="w3-bar-item w3-button">PS4</a>
+                    <a href="#" class="w3-bar-item w3-button">PS VR2</a>
+                    <a href="#" class="w3-bar-item w3-button">PC</a>
+                    <a href="#" class="w3-bar-item w3-button">PS Plus</a>
+                </div>
+            </div>
+            <div class="w3-dropdown-hover w3-hide-small">
+                <button class="w3-padding-24 w3-button" title="More">PS5 <i class="fa fa-caret-down"></i></button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                    <a href="#" class="w3-bar-item w3-button">Console</a>
+                    <a href="#" class="w3-bar-item w3-button">Game</a>
+                    <a href="#" class="w3-bar-item w3-button">Controllers</a>
+                    <a href="#" class="w3-bar-item w3-button">PS VR2</a>
+                    <a href="#" class="w3-bar-item w3-button">Headsets</a>
+                </div>
+            </div>
+            <div class="w3-dropdown-hover w3-hide-small">
+                <button class="w3-padding-24 w3-button" title="More">PS4 <i class="fa fa-caret-down"></i></button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                    <a href="#" class="w3-bar-item w3-button">Console</a>
+                    <a href="#" class="w3-bar-item w3-button">Game</a>
+                    <a href="#" class="w3-bar-item w3-button">Controllers</a>
+                    <a href="#" class="w3-bar-item w3-button">Headsets</a>
+                </div>
+            </div>
+            <div class="w3-dropdown-hover w3-hide-small">
+                <button class="w3-padding-24 w3-button" title="More">Services <i class="fa fa-caret-down"></i></button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                    <a href="#" class="w3-bar-item w3-button">PS Plus</a>
+                    <a href="#" class="w3-bar-item w3-button">PS Stars</a>
+                </div>
+            </div>
+            <div class="w3-dropdown-hover w3-hide-small">
+                <button class="w3-padding-24 w3-button" title="More">Accessories <i
+                        class="fa fa-caret-down"></i></button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                    <a href="#" class="w3-bar-item w3-button">PS5 Controllers</a>
+                    <a href="#" class="w3-bar-item w3-button">Playstation Portal Remote Player</a>
+                    <a href="#" class="w3-bar-item w3-button">PS VR2</a>
+                    <a href="#" class="w3-bar-item w3-button">Headsets</a>
+                    <a href="#" class="w3-bar-item w3-button">All Accessories</a>
+                </div>
+            </div>
+            <div class="w3-dropdown-hover w3-hide-small">
+                <button class="w3-padding-24 w3-button" title="More">News <i class="fa fa-caret-down"></i></button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                    <a href="#" class="w3-bar-item w3-button">PS Blog</a>
+                    <a href="#" class="w3-bar-item w3-button">This Month on Playstation</a>
+                </div>
+            </div>
+            <div class="w3-dropdown-hover w3-hide-small">
+                <button class="w3-padding-24 w3-button" title="More">Store <i class="fa fa-caret-down"></i></button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                    <a href="#" class="w3-bar-item w3-button">Buy Consoles</a>
+                    <a href="#" class="w3-bar-item w3-button">Buy Games</a>
+                    <a href="#" class="w3-bar-item w3-button">Buy Accessories</a>
+                    <a href="#" class="w3-bar-item w3-button">Subscribe to PS Plus</a>
+                    <a href="#" class="w3-bar-item w3-button">Buy merchandise</a>
+                </div>
+            </div>
+            <div class="w3-dropdown-hover w3-hide-small">
+                <button class="w3-padding-24 w3-button" title="More">Support <i class="fa fa-caret-down"></i></button>
+                <div class="w3-dropdown-content w3-bar-block w3-card-4">
+                    <a href="#" class="w3-bar-item w3-button">Support</a>
+                    <a href="#" class="w3-bar-item w3-button">PSN Status</a>
+                </div>
+            </div>
+
+            <div class="topRight">
+                <div class="w3-right" id="welcomeName">
+
+                </div>
+                <button class="w3-btn w3-round w3-blue w3-right sign-in-btn" id="signInButton">Sign In</button>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
+    <!--
+    <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
+        <a href="#band" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">BAND</a>
+        <a href="#tour" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">TOUR</a>
+        <a href="#contact" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CONTACT</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">MERCH</a>
+    </div>-->
+
+    <!-- PAGE CONTENT -->
+    <div class="w3-content" style="max-width:2000px;margin-top:46px">
+        <div class="hero-section w3-display-container w3-center">
+            <!-- HERO IMAGE AND BANNER -->
+            <img class="hero-image"
+                src="https://external-preview.redd.it/according-to-powerpyxs-guide-final-fantasy-7-vii-rebirth-v0-7-66Bc-0NCsLy6YPZF-iOWpPH_AvbeVT-MV1ieD6cOg.jpg?auto=webp&s=cb88b8ccee63ec817b123255bab1321cb1c8f91d"
+                alt="Main Hero Image" style="width: 100%; height: 75vh;" id="heroImage">
+            <div class="banner">Save $120 on PS5 Console Bundles</div>
+            <div class="overlay-box">
+                <h2 class="overlay-title">The Unknown Journey Continues</h2>
+                <p class="overlay-description">Final Fantasy VII Rebirth is the second entry in the Final Fantasy VII
+                    remake project, which retells the story of the genre-redefining RPG across three distinct games.</p>
+                <button id="openBuyModalBtn" class="material-button openBuyModalBtn">Buy Now</button>
+            </div>
+
+            <!-- THUMBNAIL IMAGES -->
+            <div class="hero-thumbnails">
+                <img class="thumbnail-image selected"
+                    src="https://external-preview.redd.it/according-to-powerpyxs-guide-final-fantasy-7-vii-rebirth-v0-7-66Bc-0NCsLy6YPZF-iOWpPH_AvbeVT-MV1ieD6cOg.jpg?auto=webp&s=cb88b8ccee63ec817b123255bab1321cb1c8f91d"
+                    style="height: 75px; width: 150px" alt="Thumbnail 1" id="finalFantasyHero">
+                <img class="thumbnail-image" src="https://game-mag.ru/wp-content/uploads/2023/12/helldivers-2-cov.jpg"
+                    style="height: 75px; width: 150px" alt="Thumbnail 2" id="helldiversHero">
+                <img class="thumbnail-image"
+                    src="https://gmedia.playstation.com/is/image/SIEPDC/pulse-elite-wireless-headset-homepage-hero-desktop-01-en-16feb24?$2400px$"
+                    style="height: 75px; width: 150px" alt="Thumbnail 3" id="headsetHero">
+            </div>
+        </div>
+        <!-- SIGN IN MODAL -->
+        <div id="signInModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Sign In</h2>
+                <form>
+                    <label for="username">Email:</label><br>
+                    <input type="text" id="signInEmail" name="username"><br>
+                    <label for="password">Password:</label><br>
+                    <input type="password" id="password" name="password"><br><br>
+                    <input class="confirmSignIn" type="submit" value="Sign In">
+                </form>
+            </div>
+        </div>
+        <!-- ***** FEATURED PRODUCT *****-->
+        <div class="container">
+            <div class="left">
+                <h1>
+                    Introducing the PS5 console and accessories</h1>
+                <h2>PlayStation 5 Console</h2>
+                <p>Experience an all-new generation of incredible PlayStation games.</p>
+                <button class="w3-btn w3-round w3-blue sign-in-btn">Buy Now</button>
+            </div>
+            <div class="right">
+                <img src="https://gmedia.playstation.com/is/image/SIEPDC/ps5-slim-disc-console-featured-hardware-image-block-02-en-15nov23?$1600px$"
+                    alt="Image">
+            </div>
+        </div>
+    </div>
+    <!-- ***** CHECKOUT MODAL *****-->
+    <div id="checkoutModal" class="checkoutModal">
+        <div class="checkoutModal-content">
+            <span class="closeCheckout">&times;</span>
+            <h2>Checkout</h2>
+            <!-- ***** PRODUCT INFORMATION *****-->
+            <div class="product-info">
+                <h3 id="modalTitle">Product Name</h3>
+                <p id="modalQuantity">Quantity: </p>
+                <p id="modalPrice">Price: </p>
+                <p id="modalTotal">Total: </p>
+                <p hidden id="modalPlatform"></p>
+                <p hidden id="modalSKU"></p>
+            </div>
+            <!-- ***** CHECKOUT FORM *****-->
+            <form id="checkoutForm">
+                <h3>Customer Information</h3>
+                <div class="input-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="fullName" name="name" required>
+                </div>
+                <!-- ***** EMAIL FIELD *****-->
+                <div class="input-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <!-- ***** CREDIT CARD FIELD *****-->
+                <div class="input-group">
+                    <label for="creditCard">Credit Card Number:</label>
+                    <input type="text" id="creditCard" name="creditCard" required>
+                </div>
+                <!-- ***** COMPLETE ORDER BUTTON *****-->
+                <button type="submit" class="material-button payButton">Complete Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ***** FOOTER *****-->
+    <footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
+        <button class="resetAJS w3-btn w3-round w3-red">RESET AJS</button>
+    </footer>
+
+</body>
+
+</html>
