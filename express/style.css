@@ -216,11 +216,17 @@ input[type="submit"]:hover {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     padding: 10px;
-    z-index: 900;
+    /* z-index: 900;*/
     /* Ensure the banner stays above other content */
 }
 
 .w3-bar {
+    z-index: 1000;
+}
+
+.w3-dropdown-hover,
+.w3-dropdown-content,
+.w3-bar-item {
     z-index: 1000;
 }
 
@@ -285,6 +291,7 @@ input[type="submit"]:hover {
 
 .resetAJS {
     display: flex;
+    height: 40px;
 }
 
 /* Modal Styles */
@@ -357,4 +364,128 @@ input[type="submit"]:hover {
 
 .closeCheckout {
     cursor: pointer;
+}
+
+.ad-banner {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.news-header {
+    background-color: transparent;
+    /* Transparent background */
+    color: #111c2d;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 2px solid #6addb2;
+}
+
+
+.title-menu {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.news-menu-items {
+    display: flex;
+    justify-content: center;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Style for individual menu items */
+.news-menu-item {
+    margin: 0 10px;
+}
+
+.ad-banner-top {
+    cursor: pointer;
+}
+
+.center-align {
+    font-weight: 900;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.use-case-nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.use-case-list {
+    list-style: none;
+    text-align: left;
+}
+
+.use-case-header {
+    font-size: large;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+.fold-out {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 40px;
+    height: 40px;
+    background-color: #007bff;
+    border-radius: 50%;
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Add shadow effect */
+}
+
+.details {
+    position: fixed;
+    bottom: 70px;
+    left: 20px;
+    margin-bottom: 20px;
+    background-color: #f1f1f1;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Add shadow effect */
+    display: none;
+    z-index: 999;
+}
+
+/* CSS for person icon */
+.person-icon {
+    font-size: 24px;
+    line-height: 40px;
+}
+
+.person-details {
+    display: flex;
+    flex-direction: column;
+}
+
+#person-detail-list {
+    list-style: none;
+    text-align: left;
+}
+
+li strong {
+    font-weight: bold;
+    font-size: larger;
 }

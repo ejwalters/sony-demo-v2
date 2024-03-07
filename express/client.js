@@ -56,6 +56,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const payButton = document.querySelector(".payButton");
     const cname = "ajs_anonymous_id";
     const confirmSignIn = document.querySelector(".confirmSignIn");
+    let newCookie = getCookie(cname);
+    const span = document.getElementsByClassName("closeCheckout")[0];
 
     function getCookie(cname) {
         let name = cname + "=";
@@ -73,107 +75,99 @@ document.addEventListener('DOMContentLoaded', function () {
         return "";
     }
 
-    let newCookie = getCookie(cname);
-
-
-    buyButton.addEventListener('click', function () {
-        checkoutModal.style.display = 'block';
-    });
-
-    const span = document.getElementsByClassName("closeCheckout")[0];
-
-    // When the user clicks on <span> (x), close the modal
-    span.onclick = function () {
-        checkoutModal.style.display = "none";
+    //***** OPEN CHECKOUT MODAL PAGE *****//
+    if (buyButton) {
+        buyButton.addEventListener('click', function () {
+            checkoutModal.style.display = 'block';
+        });
     }
 
+
+    //***** CLOSE CHECKOUT MODAL PAGE WHEN CLICKING X *****//
+    if (span) {
+        span.onclick = function () {
+            checkoutModal.style.display = "none";
+        }
+    }
+
+
+    //***** CLOSE CHECKOUT MODAL PAGE WHEN CLICKING OUTSIDE OF MODAL *****//
     window.onclick = function (event) {
         if (event.target == checkoutModal) {
             checkoutModal.style.display = "none";
         }
     }
 
-    // Open modal when sign-in button is clicked
-    signInButton.addEventListener('click', function () {
-        signInModal.style.display = 'block';
-    });
+    //***** OPEN SIGN IN MODAL WHEN SIGN IN BUTTON IS CLICKED *****//
+    if (signInButton) {
+        signInButton.addEventListener('click', function () {
+            signInModal.style.display = 'block';
+        });
+    }
 
-    // Close the modal when the close button is clicked
-    closeButton.addEventListener('click', function () {
-        signInModal.style.display = 'none';
-    });
+    //***** CLOSE SIGN IN MODAL WHEN CLOSE BUTTON IS CLICKED *****//
+    if (closeButton) {
+        closeButton.addEventListener('click', function () {
+            signInModal.style.display = 'none';
+        });
+    }
 
-    resetAJS.addEventListener('click', function () {
-        analytics.reset();
-        //console.log("COOKIES -- " + document.cookie)
-    });
 
-    // Close the modal when clicking outside of it
+    //***** CLOSE SIGN IN MODAL WHEN CLICKING OUTSIDE OF MODAL *****//
     window.addEventListener('click', function (event) {
         if (event.target === signInModal) {
             signInModal.style.display = 'none';
         }
     });
 
-    thumbnailImage.forEach((thumbnail, index) => {
-        // Attach a click event listener to each thumbnail image
-        thumbnail.addEventListener('click', () => {
-            // Track the click
-            let chosenProduct = products[index];
-            overlayTitle.textContent = chosenProduct.headline;
-            overlayDescription.textContent = chosenProduct.description;
-            modalTitle.textContent = chosenProduct.name;
-            modalPrice.textContent = chosenProduct.price;
-            modalTotal.textContent = chosenProduct.price;
-            modalQuantity.textContent = "x1";
-            modalPlatform.value = chosenProduct.platform;
-            modalSKU.value = chosenProduct.sku;
-            console.log("PLATFORM __ :" + chosenProduct.platform);
+    //***** RESET AJS *****//
+    if (resetAJS) {
+        resetAJS.addEventListener('click', function () {
+            analytics.reset();
+        });
+    }
 
-            analytics.track('Product Viewed', {
-                name: chosenProduct.name,
-                platform: chosenProduct.platform,
-                price: chosenProduct.price,
-                sku: chosenProduct.sku
+
+    //***** TRACK THUMBNAIL CLICKS, SET CHOSEN PRODUCT, SEND PRODUCT VIEWED EVENT TO SEGMENT *****//
+    if (thumbnailImage) {
+        thumbnailImage.forEach((thumbnail, index) => {
+            // Attach a click event listener to each thumbnail image
+            thumbnail.addEventListener('click', () => {
+                // Track the click
+                let chosenProduct = products[index];
+                overlayTitle.textContent = chosenProduct.headline;
+                overlayDescription.textContent = chosenProduct.description;
+                modalTitle.textContent = chosenProduct.name;
+                modalPrice.textContent = chosenProduct.price;
+                modalTotal.textContent = chosenProduct.price;
+                modalQuantity.textContent = "x1";
+                modalPlatform.value = chosenProduct.platform;
+                modalSKU.value = chosenProduct.sku;
+
+                thumbnailImages.forEach(function (thumb) {
+                    thumb.classList.remove('selected');
+                    thumb.style.opacity = '0.5';
+                });
+
+                // Add selected class to the clicked thumbnail
+                thumbnail.classList.add('selected');
+                thumbnail.style.opacity = '1';
+                heroImage.src = thumbnail.src;
+                setTimeout(function () {
+                    heroImage.style.opacity = '1'; // Fade in after changing source
+                }, 500);
+
+                analytics.track('Product Viewed', {
+                    name: chosenProduct.name,
+                    platform: chosenProduct.platform,
+                    price: chosenProduct.price,
+                    sku: chosenProduct.sku
+                });
             });
         });
-    });
+    }
 
-    payButton.addEventListener("click", (event) => {
-        console.log(newCookie);
-        console.log("PRICE  --- " + modalPrice.textContent);
-        /*console.log("TEST" + chosenProduct.title);*/
-        let payEmail = document.getElementById("email").value;
-        let payFullName = document.getElementById("fullName").value;
-        console.log(modalSKU.textContent);
-
-
-        analytics.identify(`${newCookie}`, {
-            name: payFullName,
-            email: payEmail
-        });
-        analytics.track('Order Completed', {
-            name: modalTitle.textContent,
-            platform: modalPlatform.textContent,
-            price: modalPrice.textContent,
-            sku: modalSKU.textContent
-        });
-        event.preventDefault();
-        checkoutModal.style.display = "none";
-    });
-
-    confirmSignIn.addEventListener('click', function (event) {
-        event.preventDefault();
-        let signInEmail = document.getElementById("signInEmail").value;
-        console.log("EMAIL -- " + signInEmail);
-
-        analytics.identify(`${newCookie}`, {
-            email: signInEmail
-        });
-
-        signInModal.style.display = "none";
-    });
-
+    /*
     // Add click event listener to each thumbnail image
     thumbnailImages.forEach(function (thumbnail) {
         thumbnail.addEventListener('click', function () {
@@ -193,7 +187,45 @@ document.addEventListener('DOMContentLoaded', function () {
                 heroImage.style.opacity = '1'; // Fade in after changing source
             }, 500);
         });
-    });
+    });*/
+
+    //***** HANDLE COMPLETE ORDER, SEND IDENTIFY CALL AND ORDER COMPLETED CALL TO SEGMENT *****//
+    if (payButton) {
+        payButton.addEventListener("click", (event) => {
+            let payEmail = document.getElementById("email").value;
+            let payFullName = document.getElementById("fullName").value;
+
+            analytics.identify(`${newCookie}`, {
+                name: payFullName,
+                email: payEmail
+            });
+            analytics.track('Order Completed', {
+                name: modalTitle.textContent,
+                platform: modalPlatform.textContent,
+                price: modalPrice.textContent,
+                sku: modalSKU.textContent
+            });
+            event.preventDefault();
+            checkoutModal.style.display = "none";
+        });
+    }
+
+
+    //***** HANDLE SIGN IN, SEND IDENTIFY CALL TO SEGMENT *****//
+    if (confirmSignIn) {
+        confirmSignIn.addEventListener('click', function (event) {
+            event.preventDefault();
+            let signInEmail = document.getElementById("signInEmail").value;
+
+            analytics.identify(`${newCookie}`, {
+                email: signInEmail
+            });
+            signInModal.style.display = "none";
+        });
+    }
+
+
+
 });
 // When the user clicks anywhere outside of the modal, close it
 var modal = document.getElementById('ticketModal');
@@ -204,9 +236,9 @@ window.onclick = function (event) {
 }
 
 // Get the modal element
-var checkoutModal = document.getElementById("checkoutModal");
+//var checkoutModal = document.getElementById("checkoutModal");
 
 // Get the button that opens the modal
-var btn = document.getElementById("openModalBtn");
+//var btn = document.getElementById("openModalBtn");
 
 
