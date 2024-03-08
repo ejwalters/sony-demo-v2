@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-<title>W3.CSS Template</title>
+<title>Sony Demo</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="style.css">
-<link href="https://fonts.googleapis.com/css2?family=Archivo&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 
 <script src="client.js"></script>
 
@@ -90,17 +96,6 @@
                     listItem.appendChild(textNode);
                     personDetailList.appendChild(listItem);
                 }
-                /*for (let i = 0; i < data.length; i++) {
-                    
-                    let listItem = document.createElement('li');
-                    listItem.textContent = 
-                    const element = array[index];
-
-                }
-                detailsSection.innerHTML = `
-                    <h3> USER DETAILS </h3>
-                    <p> ${newCookie} </p>
-                `;*/
 
                 //***** IF LAST PRODUCT VIEWED EXISTS, USE THAT TO PERSONALIZE HERO IMAGE *****//
                 if (data.last_product_viewed) {
@@ -265,7 +260,9 @@
                 </div>
 
                 <div class="fold-out" onclick="toggleDetails()">
-                    <span class="person-icon" style="cursor: pointer;">👤</span>
+                    <i class="material-icons" style="font-size:38px;">person</i>
+
+                    <!--<span class="person-icon" style="cursor: pointer;">👤</span>-->
                 </div>
 
             </div>
@@ -302,7 +299,7 @@
                     Introducing the PS5 console and accessories</h1>
                 <h2>PlayStation 5 Console</h2>
                 <p>Experience an all-new generation of incredible PlayStation games.</p>
-                <button class="w3-btn w3-round w3-blue sign-in-btn">Buy Now</button>
+                <button class="w3-btn w3-round w3-blue buyFeatured">Buy Now</button>
             </div>
             <div class="right">
                 <img src="https://gmedia.playstation.com/is/image/SIEPDC/ps5-slim-disc-console-featured-hardware-image-block-02-en-15nov23?$1600px$"
@@ -323,6 +320,44 @@
                 <p id="modalTotal">Total: </p>
                 <p hidden id="modalPlatform"></p>
                 <p hidden id="modalSKU"></p>
+            </div>
+            <!-- ***** CHECKOUT FORM *****-->
+            <form id="checkoutForm">
+                <h3>Customer Information</h3>
+                <div class="input-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="fullName" name="name" required>
+                </div>
+                <!-- ***** EMAIL FIELD *****-->
+                <div class="input-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <!-- ***** CREDIT CARD FIELD *****-->
+                <div class="input-group">
+                    <label for="creditCard">Credit Card Number:</label>
+                    <input type="text" id="creditCard" name="creditCard" required>
+                </div>
+                <!-- ***** COMPLETE ORDER BUTTON *****-->
+                <button type="submit" class="material-button payButton">Complete Order</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ***** FEATURED CHECKOUT MODAL ***** THIS IS A HACK-->
+    <!-- I was having trouble saving the state of what the last carousel item clicked was when opening the buy modal for the featured item. As a workaround, I make a featured checkout modal page. Not ideal-->
+    <div id="featuredCheckoutModal" class="featuredCheckoutModal">
+        <div class="checkoutModal-content">
+            <span class="closeFeaturedCheckout">&times;</span>
+            <h2>Checkout</h2>
+            <!-- ***** PRODUCT INFORMATION *****-->
+            <div class="product-info">
+                <h3 id="featuredModalTitle">Product Name</h3>
+                <p id="featuredModalQuantity">Quantity: </p>
+                <p id="featuredModalPrice">Price: </p>
+                <p id="featuredModalTotal">Total: </p>
+                <p hidden id="featuredModalPlatform"></p>
+                <p hidden id="featuredModalSKU"></p>
             </div>
             <!-- ***** CHECKOUT FORM *****-->
             <form id="checkoutForm">

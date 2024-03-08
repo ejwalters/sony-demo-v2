@@ -127,7 +127,7 @@ input[type="submit"]:hover {
 }
 
 #welcomeName {
-    font-size: larger;
+    font-size: 18px;
     margin-top: 10px;
 
 }
@@ -216,6 +216,7 @@ input[type="submit"]:hover {
     background-color: rgba(0, 0, 0, 0.5);
     color: white;
     padding: 10px;
+    font-size: 24px;
     /* z-index: 900;*/
     /* Ensure the banner stays above other content */
 }
@@ -307,6 +308,18 @@ input[type="submit"]:hover {
     overflow: auto;
 }
 
+.featuredCheckoutModal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+}
+
 .checkoutModal-content {
     background-color: #fefefe;
     margin: 15% auto;
@@ -363,6 +376,10 @@ input[type="submit"]:hover {
 }
 
 .closeCheckout {
+    cursor: pointer;
+}
+
+.closeFeaturedCheckout {
     cursor: pointer;
 }
 
@@ -451,6 +468,9 @@ input[type="submit"]:hover {
     cursor: pointer;
     z-index: 1000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
     /* Add shadow effect */
 }
 
@@ -473,6 +493,7 @@ input[type="submit"]:hover {
 .person-icon {
     font-size: 24px;
     line-height: 40px;
+    color: white;
 }
 
 .person-details {
