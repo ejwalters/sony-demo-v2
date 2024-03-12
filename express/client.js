@@ -46,18 +46,28 @@ document.addEventListener('DOMContentLoaded', function () {
     const thumbnailImage = document.querySelectorAll('.thumbnail-image');
     const resetAJS = document.querySelector('.resetAJS');
     const buyButton = document.querySelector('.openBuyModalBtn');
+    const buyFeaturedButton = document.querySelector('.buyFeatured');
     const checkoutModal = document.getElementById('checkoutModal');
+    const featuredCheckoutModal = document.getElementById('featuredCheckoutModal');
     let modalTitle = document.getElementById('modalTitle');
     let modalQuantity = document.getElementById('modalQuantity');
     let modalPrice = document.getElementById('modalPrice');
     let modalTotal = document.getElementById('modalTotal');
     let modalPlatform = document.getElementById('modalPlatform');
     let modalSKU = document.getElementById('modalSKU');
+    let featuredModalTitle = document.getElementById('featuredModalTitle');
+    let featuredModalQuantity = document.getElementById('featuredModalQuantity');
+    let featuredModalPrice = document.getElementById('featuredModalPrice');
+    let featuredModalTotal = document.getElementById('featuredModalTotal');
+    let featuredModalPlatform = document.getElementById('featuredModalPlatform');
+    let featuredModalSKU = document.getElementById('featuredModalSKU');
     const payButton = document.querySelector(".payButton");
     const cname = "ajs_anonymous_id";
     const confirmSignIn = document.querySelector(".confirmSignIn");
     let newCookie = getCookie(cname);
     const span = document.getElementsByClassName("closeCheckout")[0];
+    const spanFeatured = document.getElementsByClassName("closeFeaturedCheckout")[0];
+    let dropdowns = document.querySelectorAll('.w3-dropdown-hover');
 
     function getCookie(cname) {
         let name = cname + "=";
@@ -75,6 +85,47 @@ document.addEventListener('DOMContentLoaded', function () {
         return "";
     }
 
+    dropdowns.forEach(function (dropdown) {
+        // Add click event listener to the dropdown menu item
+        dropdown.addEventListener('click', function (event) {
+            // Check if the clicked element is a dropdown menu item
+            if (event.target.closest('.w3-dropdown-content')) {
+                // Get the text content of the clicked dropdown menu item
+                var clickedItemText = event.target.textContent;
+                // Perform actions based on the clicked item
+                console.log('Clicked item:', clickedItemText);
+                analytics.track('Menu Item Clicked', {
+                    name: clickedItemText
+                });
+            }
+        });
+    });
+
+    /***** FEATURED ITEM BUY FUNCTIONS *****/
+    if (buyFeaturedButton) {
+        buyFeaturedButton.addEventListener('click', function () {
+            featuredModalTitle.textContent = "Playstation 5";
+            featuredModalQuantity.textContent = "x1";
+            featuredModalPrice.textContent = 449.99;
+            featuredModalTotal.textContent = 449.99;
+            featuredCheckoutModal.style.display = 'block';
+        });
+    }
+
+    if (spanFeatured) {
+        spanFeatured.onclick = function () {
+            featuredCheckoutModal.style.display = "none";
+        }
+    }
+
+    window.addEventListener('click', function (event) {
+        if (event.target == featuredCheckoutModal) {
+            featuredCheckoutModal.style.display = "none";
+        }
+    });
+
+    /***** CAROUSEL ITEM BUY FUNCTIONS *****/
+
     //***** OPEN CHECKOUT MODAL PAGE *****//
     if (buyButton) {
         buyButton.addEventListener('click', function () {
@@ -82,14 +133,12 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-
     //***** CLOSE CHECKOUT MODAL PAGE WHEN CLICKING X *****//
     if (span) {
         span.onclick = function () {
             checkoutModal.style.display = "none";
         }
     }
-
 
     //***** CLOSE CHECKOUT MODAL PAGE WHEN CLICKING OUTSIDE OF MODAL *****//
     window.onclick = function (event) {
@@ -111,6 +160,10 @@ document.addEventListener('DOMContentLoaded', function () {
             signInModal.style.display = 'none';
         });
     }
+
+    navItem.addEventListener('click', function (event) {
+        console.log("EVENT : " + event);
+    });
 
 
     //***** CLOSE SIGN IN MODAL WHEN CLICKING OUTSIDE OF MODAL *****//
