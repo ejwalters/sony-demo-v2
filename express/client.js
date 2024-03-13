@@ -62,12 +62,15 @@ document.addEventListener('DOMContentLoaded', function () {
     let featuredModalPlatform = document.getElementById('featuredModalPlatform');
     let featuredModalSKU = document.getElementById('featuredModalSKU');
     const payButton = document.querySelector(".payButton");
+    const featuredPayButton = document.querySelector(".featuredPayButton");
     const cname = "ajs_anonymous_id";
     const confirmSignIn = document.querySelector(".confirmSignIn");
     let newCookie = getCookie(cname);
     const span = document.getElementsByClassName("closeCheckout")[0];
     const spanFeatured = document.getElementsByClassName("closeFeaturedCheckout")[0];
     let dropdowns = document.querySelectorAll('.w3-dropdown-hover');
+
+    console.log(featuredPayButton);
 
     function getCookie(cname) {
         let name = cname + "=";
@@ -161,9 +164,9 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    navItem.addEventListener('click', function (event) {
+    /*navItem.addEventListener('click', function (event) {
         console.log("EVENT : " + event);
-    });
+    });*/
 
 
     //***** CLOSE SIGN IN MODAL WHEN CLICKING OUTSIDE OF MODAL *****//
@@ -260,6 +263,27 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             event.preventDefault();
             checkoutModal.style.display = "none";
+        });
+    }
+
+    if (featuredPayButton) {
+        featuredPayButton.addEventListener("click", (event) => {
+            console.log("IN FEATURED PAY");
+            let payEmail = document.getElementById("featuredEmail").value;
+            let payFullName = document.getElementById("featuredFullName").value;
+
+            analytics.identify(`${newCookie}`, {
+                name: payFullName,
+                email: payEmail
+            });
+            analytics.track('Order Completed', {
+                name: featuredModalTitle.textContent,
+                platform: featuredModalPlatform.textContent,
+                price: featuredModalPrice.textContent,
+                sku: featuredModalSKU.textContent
+            });
+            event.preventDefault();
+            featuredCheckoutModal.style.display = "none";
         });
     }
 

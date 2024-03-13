@@ -54,6 +54,7 @@
         //***** SET COOKIE VAR FOR PROFILE API *****//
         let newCookie = getCookie(cname);
 
+        console.log("NEW COOKIE: " + newCookie);
         //***** FETCH DATA FROM PROFILE API *****//
         fetch('http://localhost:3000/userData', {
             method: 'POST',
@@ -68,6 +69,8 @@
                 console.log(data);
                 if (data.name) {
                     let dataContainer = document.getElementById('welcomeName');
+                    let personDetailsName = document.getElementById('person-details-name');
+                    //personDetailList.textContent = data.name;
                     dataContainer.innerHTML = "<p>Hi " + data.name + "!" + "</p>";
                     let banner = document.querySelector(".banner");
                     if (data.last_product_viewed) {
@@ -255,6 +258,7 @@
 
                 <div class="details" id="details">
                     <!-- Details content will be populated dynamically using JavaScript -->
+                    <h1 id="person-details-name">Anonymous User</h1>
                     <ul id="person-detail-list"></ul>
                 </div>
 
@@ -359,24 +363,24 @@
                 <p hidden id="featuredModalSKU"></p>
             </div>
             <!-- ***** CHECKOUT FORM *****-->
-            <form id="checkoutForm">
+            <form id="featuredCheckoutForm">
                 <h3>Customer Information</h3>
                 <div class="input-group">
                     <label for="name">Name:</label>
-                    <input type="text" id="fullName" name="name" required>
+                    <input type="text" id="featuredFullName" name="name" required>
                 </div>
                 <!-- ***** EMAIL FIELD *****-->
                 <div class="input-group">
                     <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+                    <input type="email" id="featuredEmail" name="email" required>
                 </div>
                 <!-- ***** CREDIT CARD FIELD *****-->
                 <div class="input-group">
                     <label for="creditCard">Credit Card Number:</label>
-                    <input type="text" id="creditCard" name="creditCard" required>
+                    <input type="text" id="featuredCreditCard" name="creditCard" required>
                 </div>
                 <!-- ***** COMPLETE ORDER BUTTON *****-->
-                <button type="submit" class="material-button payButton">Complete Order</button>
+                <button type="submit" class="material-button featuredPayButton">Complete Order</button>
             </form>
         </div>
     </div>
