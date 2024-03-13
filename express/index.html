@@ -33,13 +33,11 @@
     <script>
         //***** GET ANONYMOUS ID *****//
         const cname = "ajs_anonymous_id";
-        const test = "TEST";
 
         function toggleDetails() {
             var details = document.getElementById('details');
             details.style.display = details.style.display === 'none' ? 'block' : 'none';
         }
-
 
         async function waitForCookieAndFetch() {
             function getCookie(cname) {

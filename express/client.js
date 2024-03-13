@@ -37,7 +37,6 @@ var myIndex = 0;
 document.addEventListener('DOMContentLoaded', function () {
     const heroImage = document.querySelector('.hero-image');
     const thumbnailImages = document.querySelectorAll('.thumbnail-image');
-    //const heroThumbnails = document.querySelector('.hero-thumbnails');
     const signInModal = document.getElementById('signInModal');
     const signInButton = document.getElementById('signInButton');
     const closeButton = document.querySelector('.close');
@@ -69,9 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const span = document.getElementsByClassName("closeCheckout")[0];
     const spanFeatured = document.getElementsByClassName("closeFeaturedCheckout")[0];
     let dropdowns = document.querySelectorAll('.w3-dropdown-hover');
-    let personDetailsModal = document.getElementById('details');
 
-    console.log(featuredPayButton);
 
     function getCookie(cname) {
         let name = cname + "=";
