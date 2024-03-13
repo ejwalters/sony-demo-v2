@@ -69,6 +69,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const span = document.getElementsByClassName("closeCheckout")[0];
     const spanFeatured = document.getElementsByClassName("closeFeaturedCheckout")[0];
     let dropdowns = document.querySelectorAll('.w3-dropdown-hover');
+    let personDetailsModal = document.getElementById('details');
 
     console.log(featuredPayButton);
 

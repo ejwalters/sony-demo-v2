@@ -13,6 +13,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,100..900;1,100..900&display=swap"
     rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
 
 
 <script src="client.js"></script>
@@ -97,15 +99,22 @@
                     let detailsSection = document.getElementById('details');
                     let personDetailList = document.getElementById('person-detail-list')
 
-                    for (var key in data) {
-                        let listItem = document.createElement('li');
-                        let strong = document.createElement('strong');
-                        strong.textContent = key + ': ';
-                        listItem.appendChild(strong);
-                        let textNode = document.createTextNode(data[key]);
-                        listItem.appendChild(textNode);
-                        personDetailList.appendChild(listItem);
+                    function populateTable(data) {
+                        const tableBody = document.getElementById("person-details-body");
+
+                        for (let key in data) {
+                            let row = document.createElement('tr');
+                            let keyCell = document.createElement('td');
+                            keyCell.textContent = key;
+                            let valueCell = document.createElement('td');
+                            valueCell.textContent = data[key];
+                            row.appendChild(keyCell);
+                            row.appendChild(valueCell);
+                            tableBody.appendChild(row);
+                        }
                     }
+
+                    populateTable(data);
 
                     //***** IF LAST PRODUCT VIEWED EXISTS, USE THAT TO PERSONALIZE HERO IMAGE *****//
                     if (data.last_product_viewed) {
@@ -240,16 +249,6 @@
         </div>
     </div>
 
-
-    <!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-    <!--
-    <div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
-        <a href="#band" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">BAND</a>
-        <a href="#tour" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">TOUR</a>
-        <a href="#contact" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CONTACT</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">MERCH</a>
-    </div>-->
-
     <!-- PAGE CONTENT -->
     <div class="w3-content" style="max-width:2000px;margin-top:46px">
         <div class="hero-section w3-display-container w3-center">
@@ -270,13 +269,21 @@
                 <div class="details" id="details">
                     <!-- Details content will be populated dynamically using JavaScript -->
                     <h1 id="person-details-name">Anonymous User</h1>
-                    <ul id="person-detail-list"></ul>
+                    <!--<ul id="person-detail-list"></ul>-->
+                    <table class="table table-striped table-hover" id="person-details-table">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Trait Name</th>
+                                <th>Trait Value</th>
+                            </tr>
+                        </thead>
+                        <tbody id="person-details-body">
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="fold-out" onclick="toggleDetails()">
                     <i class="material-icons" style="font-size:38px;">person</i>
-
-                    <!--<span class="person-icon" style="cursor: pointer;">👤</span>-->
                 </div>
 
             </div>
@@ -307,7 +314,7 @@
             </div>
         </div>
         <!-- ***** FEATURED PRODUCT *****-->
-        <div class="container">
+        <div class="container-featured">
             <div class="left">
                 <h1>
                     Introducing the PS5 console and accessories</h1>
