@@ -22,11 +22,12 @@ const port = 3000;
 const cors = require('cors');
 server.listen(port);
 console.debug('Server listening on port ' + port);
-app.use(cors());
+//app.use(cors());
 
 //accepts request from client, calls Segment API to retrieve anon_id traits, sends traits back to client
 app.post('/userData', async (req, res) => {
     const anon_id = req.body.anon_id;
+    console.log("ANON: " + anon_id);
     if (anon_id) {
         let new_anon_id = (anon_id.replace(/['"]+/g, ''));
         let api_url = 'https://profiles.segment.com/v1/spaces/' + PersonasSpace + '/collections/users/profiles/anonymous_id:' + new_anon_id + '/traits?limit=200';
@@ -42,6 +43,7 @@ app.post('/userData', async (req, res) => {
         } catch (error) {
             // Handle the error here, or throw it again if needed
             console.error('Error occurred while making the request:', error);
+            res.json({ message: "No data found" });
         }
     }
     res.end();

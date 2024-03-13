@@ -36,104 +36,115 @@
             var details = document.getElementById('details');
             details.style.display = details.style.display === 'none' ? 'block' : 'none';
         }
-        function getCookie(cname) {
-            let name = cname + "=";
-            let decodedCookie = decodeURIComponent(document.cookie);
-            let ca = decodedCookie.split(';');
-            for (let i = 0; i < ca.length; i++) {
-                let c = ca[i];
-                while (c.charAt(0) == ' ') {
-                    c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                    return c.substring(name.length, c.length);
-                }
-            }
-            return "";
-        }
-        //***** SET COOKIE VAR FOR PROFILE API *****//
-        let newCookie = getCookie(cname);
 
-        console.log("NEW COOKIE: " + newCookie);
-        //***** FETCH DATA FROM PROFILE API *****//
-        fetch('http://localhost:3000/userData', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ anon_id: newCookie })
-        })
-            .then(response => response.json())
-            .then(data => {
-                //***** USE PROFILE API TO PERSONALIZE BANNER AND NAV BAR *****//
-                console.log(data);
-                if (data.name) {
-                    let dataContainer = document.getElementById('welcomeName');
-                    let personDetailsName = document.getElementById('person-details-name');
-                    //personDetailList.textContent = data.name;
-                    dataContainer.innerHTML = "<p>Hi " + data.name + "!" + "</p>";
-                    let banner = document.querySelector(".banner");
-                    if (data.last_product_viewed) {
-                        banner.textContent = "Hi " + data.name + "!" + " Be sure to check out " + data.last_product_viewed;
+
+        async function waitForCookieAndFetch() {
+            function getCookie(cname) {
+                let name = cname + "=";
+                let decodedCookie = decodeURIComponent(document.cookie);
+                let ca = decodedCookie.split(';');
+                for (let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
                     }
                 }
+                return "";
+            }
 
-                //***** INITIALIZE IMAGES AND OVERLAY ELEMENTS FOR DYNAMIC DISPALY *****//
-                let finalFantasyThumbnail = document.getElementById("finalFantasyHero");
-                let headsetThumbnail = document.getElementById("headsetHero");
-                let helldiversThumbnail = document.getElementById("helldiversHero");
-                let dynamicHero = document.getElementById("heroImage");
-                let textOverlay = document.querySelector(".overlay-title");
-                let overlayDescription = document.querySelector(".overlay-description");
+            while (!getCookie(cname)) {
+                await new Promise(resolve => setTimeout(resolve, 100));
+            }
 
-                let detailsSection = document.getElementById('details');
-                let personDetailList = document.getElementById('person-detail-list')
+            //***** SET COOKIE VAR FOR PROFILE API *****//
+            let newCookie = getCookie(cname);
 
-                for (var key in data) {
-                    let listItem = document.createElement('li');
-                    let strong = document.createElement('strong');
-                    strong.textContent = key + ': ';
-                    listItem.appendChild(strong);
-                    let textNode = document.createTextNode(data[key]);
-                    listItem.appendChild(textNode);
-                    personDetailList.appendChild(listItem);
-                }
+            console.log("NEW COOKIE: " + newCookie);
+            //***** FETCH DATA FROM PROFILE API *****//
+            fetch('http://localhost:3000/userData', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ anon_id: newCookie })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    //***** USE PROFILE API TO PERSONALIZE BANNER AND NAV BAR *****//
+                    console.log(data);
+                    if (data.name) {
+                        let dataContainer = document.getElementById('welcomeName');
+                        let personDetailsName = document.getElementById('person-details-name');
+                        personDetailsName.textContent = data.name;
+                        dataContainer.innerHTML = "<p>Hi " + data.name + "!" + "</p>";
+                        let banner = document.querySelector(".banner");
+                        if (data.last_product_viewed) {
+                            banner.textContent = "Hi " + data.name + "!" + " Be sure to check out " + data.last_product_viewed;
+                        }
+                    }
 
-                //***** IF LAST PRODUCT VIEWED EXISTS, USE THAT TO PERSONALIZE HERO IMAGE *****//
-                if (data.last_product_viewed) {
-                    for (let i = 0; i < products.length; i++) {
-                        if (data.last_product_viewed == products[i].name) {
-                            dynamicHero.src = products[i].img;
-                            textOverlay.textContent = products[i].headline;
-                            overlayDescription.textContent = products[i].description;
-                            modalTitle.textContent = products[i].name;
-                            modalPrice.textContent = "Price: $" + products[i].price;
-                            modalTotal.textContent = "Total: $" + products[i].price;
-                            modalQuantity.textContent = "x1";
-                            modalPlatform.textContent = products[i].platform;
-                            modalSKU.textContent = products[i].sku;
-                            if (products[i].name == "Helldivers") {
-                                helldiversThumbnail.classList.add("selected");
-                                finalFantasyThumbnail.classList.remove("selected");
-                                headsetThumbnail.classList.remove("selected");
-                            }
-                            if (products[i].name == "Final Fantasy") {
-                                helldiversThumbnail.classList.remove("selected");
-                                finalFantasyThumbnail.classList.add("selected");
-                                headsetThumbnail.classList.remove("selected");
-                            }
-                            if (products[i].name == "Pulse Elite Wireless Headset") {
-                                helldiversThumbnail.classList.remove("selected");
-                                finalFantasyThumbnail.classList.remove("selected");
-                                headsetThumbnail.classList.add("selected");
+                    //***** INITIALIZE IMAGES AND OVERLAY ELEMENTS FOR DYNAMIC DISPALY *****//
+                    let finalFantasyThumbnail = document.getElementById("finalFantasyHero");
+                    let headsetThumbnail = document.getElementById("headsetHero");
+                    let helldiversThumbnail = document.getElementById("helldiversHero");
+                    let dynamicHero = document.getElementById("heroImage");
+                    let textOverlay = document.querySelector(".overlay-title");
+                    let overlayDescription = document.querySelector(".overlay-description");
+
+                    let detailsSection = document.getElementById('details');
+                    let personDetailList = document.getElementById('person-detail-list')
+
+                    for (var key in data) {
+                        let listItem = document.createElement('li');
+                        let strong = document.createElement('strong');
+                        strong.textContent = key + ': ';
+                        listItem.appendChild(strong);
+                        let textNode = document.createTextNode(data[key]);
+                        listItem.appendChild(textNode);
+                        personDetailList.appendChild(listItem);
+                    }
+
+                    //***** IF LAST PRODUCT VIEWED EXISTS, USE THAT TO PERSONALIZE HERO IMAGE *****//
+                    if (data.last_product_viewed) {
+                        for (let i = 0; i < products.length; i++) {
+                            if (data.last_product_viewed == products[i].name) {
+                                dynamicHero.src = products[i].img;
+                                textOverlay.textContent = products[i].headline;
+                                overlayDescription.textContent = products[i].description;
+                                modalTitle.textContent = products[i].name;
+                                modalPrice.textContent = "Price: $" + products[i].price;
+                                modalTotal.textContent = "Total: $" + products[i].price;
+                                modalQuantity.textContent = "x1";
+                                modalPlatform.textContent = products[i].platform;
+                                modalSKU.textContent = products[i].sku;
+                                if (products[i].name == "Helldivers") {
+                                    helldiversThumbnail.classList.add("selected");
+                                    finalFantasyThumbnail.classList.remove("selected");
+                                    headsetThumbnail.classList.remove("selected");
+                                }
+                                if (products[i].name == "Final Fantasy") {
+                                    helldiversThumbnail.classList.remove("selected");
+                                    finalFantasyThumbnail.classList.add("selected");
+                                    headsetThumbnail.classList.remove("selected");
+                                }
+                                if (products[i].name == "Pulse Elite Wireless Headset") {
+                                    helldiversThumbnail.classList.remove("selected");
+                                    finalFantasyThumbnail.classList.remove("selected");
+                                    headsetThumbnail.classList.add("selected");
+                                }
                             }
                         }
                     }
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+        }
+        waitForCookieAndFetch();
     </script>
 </head>
 
