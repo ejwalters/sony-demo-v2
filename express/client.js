@@ -28,11 +28,27 @@ const products = [
         headline: "Pulse Elite Wireless Headset",
         description: "Enjoy lifelike gaming audio in a comfortable headset design equipped with a retractable microphone and built-in long-life battery.",
         img: "https://gmedia.playstation.com/is/image/SIEPDC/pulse-elite-wireless-headset-homepage-hero-desktop-01-en-16feb24?$2400px$"
+    },
+    {
+        id: 4,
+        name: "Playstation 5",
+        platform: "PS5",
+        price: 449.99,
+        sku: 990392,
+        headline: "Playstation 5",
+        description: "PLAY LIKE NEVER BEFORE",
+        img: "https://gmedia.playstation.com/is/image/SIEPDC/ps5-slim-disc-console-featured-hardware-image-block-02-en-15nov23?$1600px$"
     }
 ]
 
 
 var myIndex = 0;
+let chosenProduct = products[0];
+
+function setChosenProduct(product) {
+    chosenProduct = product;
+    console.log("CHOSEN - " + chosenProduct.name);
+}
 
 document.addEventListener('DOMContentLoaded', function () {
     const heroImage = document.querySelector('.hero-image');
@@ -45,29 +61,24 @@ document.addEventListener('DOMContentLoaded', function () {
     const thumbnailImage = document.querySelectorAll('.thumbnail-image');
     const resetAJS = document.querySelector('.resetAJS');
     const buyButton = document.querySelector('.openBuyModalBtn');
-    const buyFeaturedButton = document.querySelector('.buyFeatured');
     const checkoutModal = document.getElementById('checkoutModal');
-    const featuredCheckoutModal = document.getElementById('featuredCheckoutModal');
     let modalTitle = document.getElementById('modalTitle');
     let modalQuantity = document.getElementById('modalQuantity');
     let modalPrice = document.getElementById('modalPrice');
     let modalTotal = document.getElementById('modalTotal');
     let modalPlatform = document.getElementById('modalPlatform');
     let modalSKU = document.getElementById('modalSKU');
-    let featuredModalTitle = document.getElementById('featuredModalTitle');
-    let featuredModalQuantity = document.getElementById('featuredModalQuantity');
-    let featuredModalPrice = document.getElementById('featuredModalPrice');
-    let featuredModalTotal = document.getElementById('featuredModalTotal');
-    let featuredModalPlatform = document.getElementById('featuredModalPlatform');
-    let featuredModalSKU = document.getElementById('featuredModalSKU');
+    let modalImage = document.getElementById('modalImage');
     const payButton = document.querySelector(".payButton");
-    const featuredPayButton = document.querySelector(".featuredPayButton");
     const cname = "ajs_anonymous_id";
     const confirmSignIn = document.querySelector(".confirmSignIn");
     let newCookie = getCookie(cname);
     const span = document.getElementsByClassName("closeCheckout")[0];
-    const spanFeatured = document.getElementsByClassName("closeFeaturedCheckout")[0];
     let dropdowns = document.querySelectorAll('.w3-dropdown-hover');
+    const buyFeaturedButton = document.querySelector('.buyFeatured')
+
+
+    let mainPageChosenProduct = products[0];
 
 
     function getCookie(cname) {
@@ -102,35 +113,36 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    /***** FEATURED ITEM BUY FUNCTIONS *****/
-    if (buyFeaturedButton) {
-        buyFeaturedButton.addEventListener('click', function () {
-            featuredModalTitle.textContent = "Playstation 5";
-            featuredModalQuantity.textContent = "x1";
-            featuredModalPrice.textContent = 449.99;
-            featuredModalTotal.textContent = 449.99;
-            featuredCheckoutModal.style.display = 'block';
-        });
-    }
-
-    if (spanFeatured) {
-        spanFeatured.onclick = function () {
-            featuredCheckoutModal.style.display = "none";
-        }
-    }
-
-    window.addEventListener('click', function (event) {
-        if (event.target == featuredCheckoutModal) {
-            featuredCheckoutModal.style.display = "none";
-        }
-    });
-
     /***** CAROUSEL ITEM BUY FUNCTIONS *****/
+
+    buyFeaturedButton.addEventListener('click', function () {
+        mainPageChosenProduct = chosenProduct;
+        console.log("OLD PRODUCT = " + mainPageChosenProduct.name);
+        chosenProduct = products[3];
+        console.log("CHOSEN NEW +++ " + chosenProduct.name);
+        modalTitle.textContent = chosenProduct.name;
+        modalPrice.textContent = chosenProduct.price;
+        modalTotal.textContent = chosenProduct.price;
+        modalImage.src = chosenProduct.img;
+        modalQuantity.textContent = "Quantity: 1";
+        modalPlatform.value = chosenProduct.platform;
+        modalSKU.value = chosenProduct.sku;
+        checkoutModal.style.display = 'block';
+    })
 
     //***** OPEN CHECKOUT MODAL PAGE *****//
     if (buyButton) {
         buyButton.addEventListener('click', function () {
             checkoutModal.style.display = 'block';
+            mainPageChosenProduct = chosenProduct;
+            console.log("CHOSEN BUY -- " + chosenProduct.name);
+            modalTitle.textContent = chosenProduct.name;
+            modalPrice.textContent = chosenProduct.price;
+            modalTotal.textContent = chosenProduct.price;
+            modalImage.src = chosenProduct.img;
+            modalQuantity.textContent = "Quantity: 1";
+            modalPlatform.value = chosenProduct.platform;
+            modalSKU.value = chosenProduct.sku;
         });
     }
 
@@ -138,6 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (span) {
         span.onclick = function () {
             checkoutModal.style.display = "none";
+            chosenProduct = mainPageChosenProduct;
         }
     }
 
@@ -145,6 +158,8 @@ document.addEventListener('DOMContentLoaded', function () {
     window.onclick = function (event) {
         if (event.target == checkoutModal) {
             checkoutModal.style.display = "none";
+            chosenProduct = mainPageChosenProduct;
+            console.log("CHOSEN CLOSE - " + chosenProduct.name);
         }
     }
 
@@ -162,11 +177,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    /*navItem.addEventListener('click', function (event) {
-        console.log("EVENT : " + event);
-    });*/
-
-
     //***** CLOSE SIGN IN MODAL WHEN CLICKING OUTSIDE OF MODAL *****//
     window.addEventListener('click', function (event) {
         if (event.target === signInModal) {
@@ -181,6 +191,11 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    /*function setChosenProduct(product) {
+        chosenProduct = product;
+        console.log("CHOSEN - " + chosenProduct.name);
+    }*/
+
 
     //***** TRACK THUMBNAIL CLICKS, SET CHOSEN PRODUCT, SEND PRODUCT VIEWED EVENT TO SEGMENT *****//
     if (thumbnailImage) {
@@ -189,6 +204,8 @@ document.addEventListener('DOMContentLoaded', function () {
             thumbnail.addEventListener('click', () => {
                 // Track the click
                 let chosenProduct = products[index];
+                setChosenProduct(chosenProduct);
+                mainPageChosenProduct = chosenProduct;
                 overlayTitle.textContent = chosenProduct.headline;
                 overlayDescription.textContent = chosenProduct.description;
                 modalTitle.textContent = chosenProduct.name;
@@ -221,28 +238,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    /*
-    // Add click event listener to each thumbnail image
-    thumbnailImages.forEach(function (thumbnail) {
-        thumbnail.addEventListener('click', function () {
-            // Change the hero image source to the clicked thumbnail
-            thumbnailImages.forEach(function (thumb) {
-                thumb.classList.remove('selected');
-                thumb.style.opacity = '0.5';
-            });
-
-            // Add selected class to the clicked thumbnail
-            thumbnail.classList.add('selected');
-            thumbnail.style.opacity = '1';
-            heroImage.src = thumbnail.src;
-            //heroImage.src = thumbnail.src.replace('-thumbnail', ''); // Replace "-thumbnail" in source
-            //heroImage.style.opacity = '0'; // Fade out
-            setTimeout(function () {
-                heroImage.style.opacity = '1'; // Fade in after changing source
-            }, 500);
-        });
-    });*/
-
     //***** HANDLE COMPLETE ORDER, SEND IDENTIFY CALL AND ORDER COMPLETED CALL TO SEGMENT *****//
     if (payButton) {
         payButton.addEventListener("click", (event) => {
@@ -263,28 +258,6 @@ document.addEventListener('DOMContentLoaded', function () {
             checkoutModal.style.display = "none";
         });
     }
-
-    if (featuredPayButton) {
-        featuredPayButton.addEventListener("click", (event) => {
-            console.log("IN FEATURED PAY");
-            let payEmail = document.getElementById("featuredEmail").value;
-            let payFullName = document.getElementById("featuredFullName").value;
-
-            analytics.identify(`${newCookie}`, {
-                name: payFullName,
-                email: payEmail
-            });
-            analytics.track('Order Completed', {
-                name: featuredModalTitle.textContent,
-                platform: featuredModalPlatform.textContent,
-                price: featuredModalPrice.textContent,
-                sku: featuredModalSKU.textContent
-            });
-            event.preventDefault();
-            featuredCheckoutModal.style.display = "none";
-        });
-    }
-
 
     //***** HANDLE SIGN IN, SEND IDENTIFY CALL TO SEGMENT *****//
     if (confirmSignIn) {

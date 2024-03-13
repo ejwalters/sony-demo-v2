@@ -17,9 +17,10 @@
 
 
 
-<script src="client.js"></script>
+
 
 <head>
+    <script src="client.js"></script>
     <script>
         !function () {
             var i = "analytics", analytics = window[i] = window[i] || []; if (!analytics.initialize) if (analytics.invoked) window.console && console.error && console.error("Segment snippet included twice."); else {
@@ -62,6 +63,7 @@
 
             //***** SET COOKIE VAR FOR PROFILE API *****//
             let newCookie = getCookie(cname);
+            let chosenProduct = products[0];
 
             console.log("NEW COOKIE: " + newCookie);
             //***** FETCH DATA FROM PROFILE API *****//
@@ -119,6 +121,7 @@
                     if (data.last_product_viewed) {
                         for (let i = 0; i < products.length; i++) {
                             if (data.last_product_viewed == products[i].name) {
+                                setChosenProduct(products[i]);
                                 dynamicHero.src = products[i].img;
                                 textOverlay.textContent = products[i].headline;
                                 overlayDescription.textContent = products[i].description;
@@ -145,6 +148,9 @@
                                 }
                             }
                         }
+                    } else {
+
+                        console.log("CHOSEN PRODUCT : " + chosenProduct.name);
                     }
                 })
                 .catch(error => {
@@ -330,16 +336,24 @@
     <!-- ***** CHECKOUT MODAL *****-->
     <div id="checkoutModal" class="checkoutModal">
         <div class="checkoutModal-content">
-            <span class="closeCheckout">&times;</span>
-            <h2>Checkout</h2>
+            <!--<span class="closeCheckout">&times;</span>-->
             <!-- ***** PRODUCT INFORMATION *****-->
             <div class="product-info">
-                <h3 id="modalTitle">Product Name</h3>
-                <p id="modalQuantity">Quantity: </p>
+                <img id="modalImage" src="" alt="" />
+                <div class="product-title-quantity">
+                    <p id="modalTitle">Product Name</p>
+                    <p id="modalQuantity">Quantity: </p>
+                </div>
                 <p id="modalPrice">Price: </p>
-                <p id="modalTotal">Total: </p>
                 <p hidden id="modalPlatform"></p>
                 <p hidden id="modalSKU"></p>
+            </div>
+            <hr>
+            <div class="totalSection">
+                <p class="modalTotalLabel">
+                    Total
+                </p>
+                <p id="modalTotal"></p>
             </div>
             <!-- ***** CHECKOUT FORM *****-->
             <form id="checkoutForm">
@@ -360,44 +374,6 @@
                 </div>
                 <!-- ***** COMPLETE ORDER BUTTON *****-->
                 <button type="submit" class="material-button payButton">Complete Order</button>
-            </form>
-        </div>
-    </div>
-
-    <!-- ***** FEATURED CHECKOUT MODAL ***** THIS IS A HACK-->
-    <!-- I was having trouble saving the state of what the last carousel item clicked was when opening the buy modal for the featured item. As a workaround, I make a featured checkout modal page. Not ideal-->
-    <div id="featuredCheckoutModal" class="featuredCheckoutModal">
-        <div class="checkoutModal-content">
-            <span class="closeFeaturedCheckout">&times;</span>
-            <h2>Checkout</h2>
-            <!-- ***** PRODUCT INFORMATION *****-->
-            <div class="product-info">
-                <h3 id="featuredModalTitle">Product Name</h3>
-                <p id="featuredModalQuantity">Quantity: </p>
-                <p id="featuredModalPrice">Price: </p>
-                <p id="featuredModalTotal">Total: </p>
-                <p hidden id="featuredModalPlatform"></p>
-                <p hidden id="featuredModalSKU"></p>
-            </div>
-            <!-- ***** CHECKOUT FORM *****-->
-            <form id="featuredCheckoutForm">
-                <h3>Customer Information</h3>
-                <div class="input-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="featuredFullName" name="name" required>
-                </div>
-                <!-- ***** EMAIL FIELD *****-->
-                <div class="input-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="featuredEmail" name="email" required>
-                </div>
-                <!-- ***** CREDIT CARD FIELD *****-->
-                <div class="input-group">
-                    <label for="creditCard">Credit Card Number:</label>
-                    <input type="text" id="featuredCreditCard" name="creditCard" required>
-                </div>
-                <!-- ***** COMPLETE ORDER BUTTON *****-->
-                <button type="submit" class="material-button featuredPayButton">Complete Order</button>
             </form>
         </div>
     </div>
