@@ -529,9 +529,9 @@ td {
     height: 75px;
     width: 100px;
     border-radius: 5px;
-
 }
 
+/*
 .product-info {
     display: flex;
     margin: 10px;
@@ -543,8 +543,8 @@ td {
     margin-left: 10px;
     justify-content: flex-start;
     gap: 0;
+}*/
 
-}
 
 #modalTitle {
     font-size: medium;
@@ -557,10 +557,11 @@ td {
     margin-top: 5px;
 }
 
+/*
 #modalPrice {
     margin-left: 250px;
     font-weight: bolder;
-}
+}*/
 
 .modalTotalLabel {
     color: #888;
@@ -576,11 +577,12 @@ td {
     justify-content: space-between;
 }
 
+/*
 #modalTotal {
     margin-right: 72px;
     font-weight: bolder;
     font-size: larger;
-}
+}*/
 
 hr {
     border: none;
@@ -589,4 +591,36 @@ hr {
     /* Set height */
     background-color: lightgray;
     /* Set background color */
+}
+
+/* Add this CSS */
+.product-info {
+    display: flex;
+    justify-content: space-between;
+    /* Aligns children elements on each end */
+    align-items: center;
+    /* Aligns children elements vertically */
+}
+
+/* Adjust the width of the product-info container to allow space for the elements */
+.product-info img {
+    max-width: 100px;
+    /* Adjust as needed */
+}
+
+.product-title-quantity {
+    flex: 1;
+    /* Takes up remaining space */
+    margin-right: 10px;
+    margin-left: 20px;
+    /* Add some space between the title and price */
+}
+
+/* Adjust the CSS for modalPrice and modalTotal */
+#modalPrice,
+#modalTotal {
+    margin-left: auto;
+    font-weight: 500;
+    font-size: medium;
+    /* Aligns elements to the right */
 }

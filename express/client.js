@@ -117,12 +117,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     buyFeaturedButton.addEventListener('click', function () {
         mainPageChosenProduct = chosenProduct;
-        console.log("OLD PRODUCT = " + mainPageChosenProduct.name);
         chosenProduct = products[3];
-        console.log("CHOSEN NEW +++ " + chosenProduct.name);
         modalTitle.textContent = chosenProduct.name;
-        modalPrice.textContent = chosenProduct.price;
-        modalTotal.textContent = chosenProduct.price;
+        const formattedCost = '$' + chosenProduct.price.toFixed(2);
+        modalPrice.textContent = formattedCost;
+        modalTotal.textContent = formattedCost;
         modalImage.src = chosenProduct.img;
         modalQuantity.textContent = "Quantity: 1";
         modalPlatform.value = chosenProduct.platform;
@@ -135,10 +134,10 @@ document.addEventListener('DOMContentLoaded', function () {
         buyButton.addEventListener('click', function () {
             checkoutModal.style.display = 'block';
             mainPageChosenProduct = chosenProduct;
-            console.log("CHOSEN BUY -- " + chosenProduct.name);
+            const formattedCost = '$' + chosenProduct.price.toFixed(2);
             modalTitle.textContent = chosenProduct.name;
-            modalPrice.textContent = chosenProduct.price;
-            modalTotal.textContent = chosenProduct.price;
+            modalPrice.textContent = formattedCost;
+            modalTotal.textContent = formattedCost;
             modalImage.src = chosenProduct.img;
             modalQuantity.textContent = "Quantity: 1";
             modalPlatform.value = chosenProduct.platform;
@@ -191,11 +190,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    /*function setChosenProduct(product) {
-        chosenProduct = product;
-        console.log("CHOSEN - " + chosenProduct.name);
-    }*/
-
 
     //***** TRACK THUMBNAIL CLICKS, SET CHOSEN PRODUCT, SEND PRODUCT VIEWED EVENT TO SEGMENT *****//
     if (thumbnailImage) {
@@ -209,8 +203,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 overlayTitle.textContent = chosenProduct.headline;
                 overlayDescription.textContent = chosenProduct.description;
                 modalTitle.textContent = chosenProduct.name;
-                modalPrice.textContent = chosenProduct.price;
-                modalTotal.textContent = chosenProduct.price;
+                const formattedCost = '$' + chosenProduct.price.toFixed(2);
+                modalPrice.textContent = formattedCost;
+                modalTotal.textContent = formattedCost;
                 modalQuantity.textContent = "x1";
                 modalPlatform.value = chosenProduct.platform;
                 modalSKU.value = chosenProduct.sku;
@@ -240,6 +235,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //***** HANDLE COMPLETE ORDER, SEND IDENTIFY CALL AND ORDER COMPLETED CALL TO SEGMENT *****//
     if (payButton) {
+        const checkoutForm = document.getElementById('checkoutForm');
         payButton.addEventListener("click", (event) => {
             let payEmail = document.getElementById("email").value;
             let payFullName = document.getElementById("fullName").value;
@@ -255,6 +251,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 sku: modalSKU.textContent
             });
             event.preventDefault();
+            checkoutForm.reset();
             checkoutModal.style.display = "none";
         });
     }
