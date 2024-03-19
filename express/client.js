@@ -47,7 +47,6 @@ let chosenProduct = products[0];
 
 function setChosenProduct(product) {
     chosenProduct = product;
-    console.log("CHOSEN - " + chosenProduct.name);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -239,6 +238,9 @@ document.addEventListener('DOMContentLoaded', function () {
         payButton.addEventListener("click", (event) => {
             let payEmail = document.getElementById("email").value;
             let payFullName = document.getElementById("fullName").value;
+            let productName = modalTitle.textContent;
+            let productQuantity = 1;
+            let productPrice = modalPrice.textContent;
 
             analytics.identify(`${newCookie}`, {
                 name: payFullName,
@@ -247,14 +249,31 @@ document.addEventListener('DOMContentLoaded', function () {
             analytics.track('Order Completed', {
                 name: modalTitle.textContent,
                 platform: modalPlatform.textContent,
-                price: modalPrice.textContent,
+                price: productPrice,
                 sku: modalSKU.textContent
             });
             event.preventDefault();
             checkoutForm.reset();
             checkoutModal.style.display = "none";
+            displayOrderConfirmation(payFullName, payEmail, productName, productQuantity, productPrice);
         });
     }
+
+    function displayOrderConfirmation(customerName, customerEmail, productName, productQuantity, productPrice) {
+        // Update the order confirmation section with the provided details
+        document.getElementById("confirmCustomerName").textContent = customerName;
+        document.getElementById("confirmCustomerEmail").textContent = customerEmail;
+        document.getElementById("confirmProductName").textContent = productName;
+        document.getElementById("confirmProductQuantity").textContent = productQuantity;
+        document.getElementById("confirmProductPrice").textContent = productPrice;
+
+        // Hide the checkout modal
+        document.getElementById("checkoutModal").style.display = "none";
+
+        // Show the order confirmation section
+        document.getElementById("orderConfirmation").style.display = "block";
+    }
+
 
     //***** HANDLE SIGN IN, SEND IDENTIFY CALL TO SEGMENT *****//
     if (confirmSignIn) {
