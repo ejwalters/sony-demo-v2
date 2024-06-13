@@ -3,6 +3,8 @@ const express = require('express');
 const path = require('path');
 const { ppid } = require('process');
 const app = express();
+const cors = require('cors');
+app.use(cors());
 app.use(express.json());
 app.use(express.static("express"));
 const bodyParser = require('body-parser');
@@ -16,20 +18,14 @@ app.use(bodyParser.json());
 
 // default URL for website
 app.use('/', express.static(path.join(__dirname, 'express/index.html')));
-
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*'); // Allow all origins
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-    next();
-  });
   
 
 const server = http.createServer(app);
 const port = 3000;
-const cors = require('cors');
+
 server.listen(port);
 console.debug('Server listening on port ' + port);
-app.use(cors());
+
 
 //accepts request from client, calls Segment API to retrieve anon_id traits, sends traits back to client
 app.post('/userData', async (req, res) => {
