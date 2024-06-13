@@ -17,6 +17,13 @@ app.use(bodyParser.json());
 // default URL for website
 app.use('/', express.static(path.join(__dirname, 'express/index.html')));
 
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*'); // Allow all origins
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    next();
+  });
+  
+
 const server = http.createServer(app);
 const port = 3000;
 const cors = require('cors');
