@@ -29,7 +29,7 @@ const port = 3000;
 const cors = require('cors');
 server.listen(port);
 console.debug('Server listening on port ' + port);
-//app.use(cors());
+app.use(cors());
 
 //accepts request from client, calls Segment API to retrieve anon_id traits, sends traits back to client
 app.post('/userData', async (req, res) => {
